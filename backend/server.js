@@ -8,15 +8,23 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type']
+}));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
 // MongoDB connection
-mongoose.connect('mongodb://mongodb:27017/gethelp', {
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://mongodb:27017/gethelp';
+
+mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-});
+})
+.then(() => console.log('MongoDB connected successfully'))
+.catch(err => console.error('MongoDB connection error:', err));
 
 // Configure multer for image upload
 const storage = multer.diskStorage({
@@ -72,6 +80,7 @@ if (!fs.existsSync('./uploads')){
     fs.mkdirSync('./uploads');
 }
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Server running on port ${port}`);
+  console.log(`API available at http://localhost:${port}`);
 });

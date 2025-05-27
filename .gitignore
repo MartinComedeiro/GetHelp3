@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+
+# Build
+build/
+dist/
+
+# Logs
+*.log
+
+# Runtime data
+uploads/
+
+# MongoDB data
+mongodb_data/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
